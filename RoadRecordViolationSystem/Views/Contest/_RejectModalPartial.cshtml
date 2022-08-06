@@ -1,0 +1,25 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="modal fade" id="modal-contest" tabindex="-1" role="alertdialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header fw-bold">
+                Reject Contest
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label fw-bold">Reason for rejection</label>
+                    <textarea id="reason-input" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="rejectContest({ contestId:@ViewBag.ContestId,reason:'' ,complainant:'@ViewBag.Complainant'})">Reject</button>
+                <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+*.suo
+*.dll
+*.pdb
+.vs/
+.vscode
+bin/
+obj/
+roadrecordviolationsystem/wwwroot/images/
+RoadRecordViolationSystem/appsettings.json

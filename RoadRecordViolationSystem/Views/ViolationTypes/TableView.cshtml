@@ -1,0 +1,39 @@
+﻿@model List<ViolationTypes>
+@using Newtonsoft.Json
+
+    <div class="card">
+        <div class="card-header fw-bold">
+            Violation Type List
+        </div>
+        <div class="card-body ">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Description</th>
+                        <th>Fine</th>
+                        <th>Penalty</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{IEnumerable<ViolationTypes> vioTypes = Model.Where(i => !i.IsArchive);}
+                    @foreach (var vioType in vioTypes)
+                    {
+                        <tr>
+                            <td class="text-wrap">@vioType.Name</td>
+                            <td>@vioType.Code</td>
+                            <td>@vioType.Description</td>
+                            <td>@vioType.Fee</td>
+                            <td>@vioType.Penalty</td>
+                            <td>
+                                <button class="btn btn-danger" onclick="requestAjaxDelete('/ViolationTypes/Archive',@JsonConvert.SerializeObject(vioType))"><i class="px-2 bi-file-zip-fill"></i></button>
+                                <button class="btn btn-primary" onclick="requestAjaxShowModal('/ViolationTypes/ModalView', 'Update Violation Type', {id:@vioType.Id})"><i class="px-2 bi-pencil"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

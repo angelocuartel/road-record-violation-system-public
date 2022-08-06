@@ -1,0 +1,14 @@
+﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+
+<script type="text/javascript">
+    // override client-side validation
+    var valSettings = {
+        validClass: "is-valid",
+        errorClass: "is-invalid"
+    };
+
+    jQuery.validator.setDefaults(valSettings);
+    jQuery.validator.unobtrusive.options = valSettings;
+</script>

@@ -1,0 +1,57 @@
+﻿@model RoadRecordViolationSystem.Models.ViolationTypes
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<div asp-validation-summary="ModelOnly"></div>
+    <div class="modal-body">
+        <form class="form-ajax" method="post">
+            <div class="row">
+                <input type="text" asp-for="Id" hidden />
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="form-label">Violation Name</label>
+                        <input type="text" id="name" asp-for="Name" class="form-control" placeholder="Example No Parking" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="form-label">Fee</label>
+                        <input type="number" id="fee" asp-for="Fee" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Fee"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="form-label">Code</label>
+                        <input type="text" asp-for="Code" id="code" class="form-control" required />
+                        <span class="text-danger" asp-validation-for="Code"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Penalty</label>
+                         <input type="text" asp-for="Penalty" id="penalty" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" asp-for="Description" id="desc"></textarea>
+                    <span class="text-danger" asp-validation-for="Description"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" onclick="requestAjaxAddUpdate('/ViolationTypes/Update')">Update</button>
+        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+    </div>
+
+

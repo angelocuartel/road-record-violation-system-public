@@ -1,0 +1,47 @@
+﻿@model RoadRecordViolationSystem.Models.ContestSchedule
+@using Newtonsoft.Json
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="modal fade" id="modal-contest" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header fw-bold">
+                Set Schedule
+                <button class="btn-close float-end" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="contest-form">
+                    <input type="text" hidden asp-for="ContestApplicationId" />
+                    <input type="text" hidden asp-for="Status" />
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="mb-2">
+                            <label class="label-for fw-bold">Mediator</label>
+                            <input type="text" id="mediator" required class="form-control" oninput="validateLettersOnly(this)" asp-for="Mediator" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                @{ Model.HearingScheduleDate = DateTime.Now;}
+                                <label class="label-for fw-bold">Date</label>
+                                <input type="date" required class="form-control" asp-for="HearingScheduleDate" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-2">
+                                <label class="label-for fw-bold">Time</label>
+                                <input type="time" required class="form-control" asp-for="HearingScheduleTime" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="approveContest()" class="btn btn-primary">Set Schedule</button>
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                </div>
+        </div>
+    </div>
+</div>

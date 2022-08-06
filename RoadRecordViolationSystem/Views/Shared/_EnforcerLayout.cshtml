@@ -1,0 +1,54 @@
+﻿@using RoadRecordViolationSystem.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="_MetaTagsPartial" />
+    <partial name="_CssStylePartial" />
+    <link rel="stylesheet" href="~/css/loaders/spinkit.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+        function preventBack() {
+            window.history.forward();
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Montserrat,'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+    </style>
+    <div class="top-header" style="background-color:white;">
+        <img src="@Url.Content(HttpContextAccessor.HttpContext.Session.GetString("ProfilePicture"))" id="profile-picture" class="img-fluid rouded-circle mx-3">
+        <div class="dropdown float-end">
+            <button class="  text-dark bg-white fw-bold text-center" style=" font-size:9px; border:none; margin-top:13px;" data-bs-toggle="dropdown">@HttpContextAccessor.HttpContext.Session.GetString("UserFullName")<br/>ENFORCER</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" asp-controller="MyAccount" asp-action="MyAccountView"><i class="bi bi-person-circle fa "></i>My Profile</a>
+                <a class="dropdown-item" style="cursor:pointer" onclick="showMyLogHistoryModal('/CurrentUserLogHistory/ModalView','My Log History',null)"><i class="bi bi-gear"></i>My Log History</a>
+                <a class="dropdown-item" asp-controller="Log" asp-action="LogOut"><i class="bi bi-box-arrow-right"></i>Log Out</a>
+            </div>
+        </div>
+        <a style="font-size:15px; margin-top:12px; text-decoration-line:none;" class="fw-bold text-dark float-start  mx-2" asp-controller="Dashboard" asp-action="ScanQR">DPOS</a>
+    </div>
+
+
+    <div id="main-container" class="container-fluid text-nowrap mt-5 pt-3">
+        @RenderBody()
+    </div>
+
+    <div id="my-loghistory-modal-holder"></div>
+    <partial name="_JavaScriptsPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+    <script src="~/js/Scoped/Dashboard/qrscan.js"></script>
+    <script src="~/js/Global/someAddRemover.js"></script>
+    <script src="~/js/Scoped/MyLogHistory/myloghistory.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</body>
+</html>

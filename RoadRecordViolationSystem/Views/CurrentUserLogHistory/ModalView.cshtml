@@ -1,0 +1,60 @@
+﻿@model List<RoadRecordViolationSystem.Models.UsersLogHistory>
+@using Newtonsoft.Json
+    <div class="modal fade">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header h5">
+                    My Log History
+                    <button class="btn btn-close float-end" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-active">
+                            <thead>
+                                <tr>
+                                    <th>Login</th>
+                                    <th>Logout</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.AntiForgeryToken()
+                                @foreach (var log in Model)
+                                {
+                                <tr>
+                                    <td>
+                                        <p class="fw-bold">@log.DateIn</p>
+                                        <p class="badge bg-success">@log.TimeIn</p>
+                                    </td>
+                                    <td>
+                                        <p class="fw-bold">@log.DateOut</p>
+                                        <p class="badge bg-danger">@log.TimeOut</p>
+                                    </td>
+                                    <td>
+                                    @if (log.DateOut != "--")
+                                    {
+                                    <button class="btn btn-danger" onclick="deleteLogHistory(@log.LogId)"><i class="bi-trash px-1"></i></button>
+                                    }
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                @{ 
+                    var hasNoToBeDelete = Model.All(i => i.DateOut == "--");
+                 }
+
+                <div class="modal-footer">
+                    
+                    @if (!hasNoToBeDelete)
+                    {
+                    <button class="btn btn-danger" onclick="deleteAll('@Url.Action("DeleteAll")', { id:'@Model[0].Id'})">Delete All</button>
+                    }
+                    <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,60 @@
+﻿@model RoadRecordViolationSystem.Models.Settings
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_NonEnforcerLayout.cshtml";
+}
+
+<div class="site-content">
+    <nav aria-labelledby="breadcrumb">
+        <ol class="breadcrumb px-4">
+            <li class="breadcrumb-item "><a class="text-decoration-none" asp-controller="Dashboard" asp-action="GetDashboardView">Dashboard</a></li>
+            <li class="breadcrumb-item active">Settings</li>
+        </ol>
+    </nav>
+    <div class="card">
+        <div class="card-body">
+            <form>
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <input type="text" asp-for="Id" hidden />
+                    <div class="mb-2">
+                        <label class="form-label">Additional charge per day (Percent)</label>
+                        <input type="number" asp-for="AdditionalChargePerDay" class="form-control" />
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="EnableSms" class="form-check-input" />
+                        <label class="form-check-label">Enable message sending</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="EnableEMail" class="form-check-input" />
+                        <label class="form-check-label">Enable Email sending</label>
+                    </div>
+                </div>
+            </form>
+            <!--
+            <div class="row">
+                <div class="mb-2">
+                    <label class="form-label fw-bold">Days before additional charge applies (Days)</label>
+                    <input type="number" asp-for="DaysBeforeAdditionalApplies" class="form-control" />
+                </div>
+            </div>
+            <!--
+            <div class="row">
+                <div class="mb-2">
+                    <label class="form-label fw-bold">Additional charge per day</label>
+                    <input type="number" class="form-control" />
+                </div>
+            </div>-->
+        </div>
+
+        <div class="card-footer">
+            <a class="float-end btn btn-primary" onclick="updateSettings()">Save</a>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/js/Scoped/settings.js"></script>

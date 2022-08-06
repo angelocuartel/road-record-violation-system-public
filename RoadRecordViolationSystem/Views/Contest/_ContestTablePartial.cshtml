@@ -1,0 +1,104 @@
+﻿@model RoadRecordViolationSystem.ViewModels.ContestAllViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="card">
+    <div class="card-header fw-bold">
+        Contest applications
+    </div>
+    <div class="card-body">
+        <nav>
+            <div class="nav nav-tabs nav-pills mb-2" id="nav-tab" role="tablist">
+                <button class="nav-link active nav-pills fw-bold" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-pending" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Pending</button>
+                <button class="nav-link fw-bold" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-approved" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Approved</button>
+                <button class="nav-link fw-bold" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-rejected" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Rejected</button>
+            </div>
+        </nav>
+        <div class="tab-content" aria-labelledby="nav-home-tab">
+            <div class="tab-pane fade show active" id="nav-pending" role="tabpanel" aria-labelledby="nav-home-tab">
+                <table class="table table-borderedtable-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Complainant</th>
+                            <th>Enforcer</th>
+                            <th>TicketNo</th>
+                            <th>Date of violation</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var pendingList = Model.ContestListViewModel.Where(i =>!i.IsApproved && !i.IsRejected);}
+                        @foreach (var application in pendingList)
+                        {
+                            <tr>
+                                <td class="fw-bold text-uppercase">@application.Complainant</td>
+                                <td>@application.Enforcer</td>
+                                <td>@application.TicketNo</td>
+                                <td>@application.DateOfviolation</td>
+                                <td>@application.Time</td>
+                                <td class="text-wrap">@application.PlaceOfViolation</td>
+                                <td>
+                                    <a asp-action="DownloadLetterContest" asp-controller="Contest" asp-route-complainant="@application.Complainant" asp-route-path="@application.LetterPath" class="btn btn-outline-dark"><i class="px-2 bi-download"></i></a>
+                                    <button onclick="viweOrCrImage({ path: '@application.OrCrPath' })" class="btn btn-outline-dark"><i class="px-2 bi-file-image"></i></button>
+                                    <button onclick="viewVideoProof({ path: '@application.VideoProofPath' })" class="btn btn-outline-dark"><i class="px-2 bi-file-play"></i></button>
+                                    <button class="btn btn-primary" onclick="showModal('/Contest/ApproveModal',{contestId:@application.ContestId})">Approve</button>
+                                    <button class="btn btn-danger" onclick="showModal('/Contest/RejectPartial',{contestId:@application.ContestId,complainant:'@application.Complainant'})">Reject</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div id="modal-holder"></div>
+            </div>
+            <div class="tab-pane fade" id="nav-approved" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mediator</th>
+                            <th>Date scheduled</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var approve in Model.ApprovedContests)
+                        {
+                            <tr>
+                                <td class="fw-bold text-uppercase">@approve.Mediator</td>
+                                <td>@approve.HearingScheduleDate.ToLongDateString()</td>
+                                <td>@approve.HearingScheduleTime.ToLongDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-rejected" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Complainant</th>
+                            <th>Enforcer</th>
+                            <th>TicketNo</th>
+                            <th>Reason for rejection</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var rejectedList = Model.ContestListViewModel.Where(i => i.IsRejected);}
+                        @foreach (var rejected in rejectedList)
+                        {
+                        <tr>
+                            <td class="fw-bold text-uppercase">@rejected.Complainant</td>
+                            <td>@rejected.Enforcer</td>
+                            <td>@rejected.TicketNo</td>
+                            <td class="text-wrap">@rejected.ReasonOfRejection</td>
+                            <td><button class="btn btn-danger" onclick="requestAjaxDelete('/Contest/DeleteRejectedContest', {contestId:@rejected.ContestId})"><i class="px-2 bi-trash"></i></button></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

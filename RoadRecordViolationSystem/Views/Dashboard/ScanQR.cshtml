@@ -1,0 +1,724 @@
+﻿
+@{
+    Layout = "/Views/Shared/_EnforcerLayout.cshtml";
+}
+<style>
+    .select2-selection--single {
+        height: 100% !important;
+    }
+
+    .select2-selection__rendered {
+        word-wrap: break-word !important;
+        text-overflow: inherit !important;
+        white-space: normal !important;
+    }
+</style>
+<div id="main-container">
+    <div id="enforcer-main-view">
+        <div class="row">
+            <!-- license capturer -->
+            <video id="webcam" autoplay playsinline width="1280" height="720" hidden></video>
+            <canvas width="640" height="480" hidden></canvas>
+
+            <!--qr capturer -->
+            <div id="qr-reader" width="250"></div>
+            <div class="text-center">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary p-4 mx-2" id="open-cam-btn" onclick="openCamera()"><i class="px-1 bi-camera"></i></button>
+                    <button class="btn btn-primary p-4 mx-2" id="qr-cam-btn" onclick="scanQr()"><i class='px-1 fa fa-qrcode'></i></button>
+                    <button class="btn btn-primary p-4 mx-2" id="no-license-btn" onclick="openPageWithModal('no-license-page','license-information-page','modal-popup')"><i class="px-1 bi-journal-x"></i></button>
+                    <button class="btn btn-primary p-4 mx-2" id="accident-btn" onclick="openPageWithModal('accident-page','license-information-page','modal-popup')"><img style="border:none;" src="~/icons/external-accident-insurance-kosonicon-solid-kosonicon.png" /></button>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-dark p-4 m-2" hidden id="close-cam-btn" onclick="resetPage()"><i class="px-1 bi-x-circle"></i></button>
+
+                    <button class="btn btn-primary p-4 m-2" hidden id="capture-btn" onclick="capture()"><img src="https://img.icons8.com/ios/20/FFFFFF/aperture.png" style="border:none;" /></button>
+
+                    <button class="btn btn-primary camera-option p-4 m-2" hidden onclick="switchCamera()"><img src="https://img.icons8.com/ios/20/FFFFFF/switch-camera.png" style="border:none" /></button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" id="modal-popup" tabindex="-1">
+        <!--start of modal-->
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--start of modal body-->
+                    <!--  <div class="license-image-preview-page">
+                        <div class="modal-header fw-bold">
+                            Preview Image
+                        </div>
+                        <div class="row">
+                            <img style="width:100%; height:auto;" id="image-preview" />
+                        </div>
+                        <div class="row">
+                            <div class="float-end mt-5">
+                                <button class="btn btn-primary" id="scanned-license-btn" onclick="openPage('vehicle-information-page','license-information-page')">Next</button>
+                                <button class="btn btn-outline-dark">Cancel</button>
+                            </div>
+                        </div>
+                    </div>-->
+                    <button class="btn-close float-end mt-2" data-bs-dismiss="modal"></button>
+                    <div class="license-information-page">
+                        <!--start of license-information-->
+                        <div class="row">
+                            <div class="modal-header fw-bold text-uppercase">
+                                License Information
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Given Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Last Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Middle Name</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Gender</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Date of birth</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Weight</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Height</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Nationality</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="form-label fw-bold text-secondary">Address</label>
+                                    <p class="details-holder text-wrap"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">City</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Eye Color</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Expiry</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">Days To Expire</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label fw-bold text-secondary">License No.</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="details-holder"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="float-end mt-5 pb-4">
+                            <button class="btn btn-primary" id="scanned-license-btn" onclick="openPage('no-license-page','license-information-page')">Next</button>
+                            <button type="button" class="btn btn-outline-dark">Cancel</button>
+                        </div>
+                    </div><!--End of license information-->
+
+
+                    <!--Start of Vehicle information-->
+                    <div class="vehicle-information-page" hidden>
+                        <div class="row col-sm-12">
+                            <div class="modal-header fw-bold text-uppercase">
+                                Vehicle Information
+                            </div>
+                            <form id="vehicle-information-form" class="fw-bold text-secondary">
+                                <div class="mb-2">
+                                    <label class="form-label">Plate No.</label>
+                                    <input type="text" class="form-control PlateNo" required maxlength="7" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Vehicle Type</label>
+                                    <select required class="form-select VehicleType">
+                                        <option value="" selected>-- SELECT TYPE--</option>
+                                        <option value="Automatic">Automatic</option>
+                                        <option value="Manual">Manual</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Model</label>
+                                    <select required class="form-select Model">
+                                        <option value="" selected>-- SELECT MODEL--</option>
+                                        <option value="AUV">AUV</option>
+                                        <option value="Bus">Bus</option>
+                                        <option value="Car">Car</option>
+                                        <option value="Jeepney">Jeepney</option>
+                                        <option value="Motorcycle">Motorcycle</option>
+                                        <option value="Taxi">Taxi</option>
+                                        <option value="Trailer">Trailer</option>
+                                        <option value="Truck">Truck</option>
+                                        <option value="Utility">Utility</option>
+                                        <option value="Van">Van</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Registration/ Sticker No</label>
+                                    <input type="text" required maxlength="14" class="form-control sticker-no" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Place of violation</label>
+                                            <input type="text" id="violation-place" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        <img hidden id="violation-map" class="img-fluid" src='https://maps.locationiq.com/v3/staticmap?key=pk.d45754a81490e6f0b9d7258d6c5b6393&center=14.708765,121.0686571&zoom=10&size=400x400&format=png&maptype=roadmap&markers=icon:tiny-red-cutout|14.708765,121.0686571&markers=icon:tiny-blue-cutout|14.708765,121.0686571'>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="mb-3">
+                                    <label class="form-label">AOR</label>
+                                    <input type="text" required maxlength="4" class="form-control aor" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">AOR Expiration</label>
+                                    <input type="date" required class="form-control aor-expiration" />
+                                </div>
+                                    -->
+
+                                <div class="float-end mt-5 pb-4">
+                                    <input type="submit" class="btn btn-primary" id="scanned-license-btn" value="Next" />
+                                    <button type="button" onclick="openPage('no-license-page','vehicle-information-page')" class="btn btn-dark">Back</button>
+                                    <button type="button" class="btn btn-outline-dark">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--End of Vehicle information-->
+
+                    <!--start of violation assigner-->
+                    <div class="violation-assigner-page" hidden>
+                        <div class="modal-header fw-bold text-uppercase">
+                            Violation Assigner
+                        </div>
+                        <div class="row col-sm-6 mt-5 mb-5">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="form-label fw-bold">Violator Name</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p id="violator-name">John Agustine Ciela</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label class="form-label fw-bold">License No.</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p id="violator-license">N-25 0938482324</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold">Violation Types</label><br />
+                                <select id="violation-types-selectbox" class="form-control ">
+                                </select><br />
+                                <button class="btn btn-primary mt-2 add-violation-btn" onclick="addViolationToDriver()">Add</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label fw-bold">Drivers Violation/s</label>
+                                <div class="table-responsive-md table-responsive-sm text-wrap">
+                                    <table class="table table-active table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Violation</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="violation-list">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <label class="form-label fw-bold">Total Amount </label>
+                                <p id="total-amount">0</p>
+                            </div>
+                        </div>
+                        <div class="float-end mt-5 pb-4">
+                            <button class="btn btn-primary" id="scanned-license-btn" onclick="openPage('preview-violation-page','violation-assigner-page')">Next</button>
+                            <button onclick="openPage('vehicle-information-page','violation-assigner-page')" class="btn btn-dark">Back</button>
+                            <button type="button" class="btn btn-outline-dark">Cancel</button>
+                        </div>
+                    </div>
+                    <!--end of violation assigner-->
+
+                    <!--start Preview violations-->
+                    <div class="preview-violation-page" hidden>
+                        <div class="modal-header fw-bold text-uppercase">
+                            Preview Violations
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label fw-bold">Violator Name</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <p id="violator-name-preview">John Agustine Ciela</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label fw-bold">License No.</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <p id="violator-license-preview">N-25 0938482324</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <label class="form-label fw-bold">Drivers Violation/s</label>
+                        <div class="row previous" hidden>
+                            <label>Previous</label>
+                            <div class="col-sm-12">
+                                <div style="margin-left:auto; margin-right:auto;" class="table-responsive-md table-responsive-sm text-wrap">
+                                    <table class="table table-active table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Violation</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="previous-violation-list-preview">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <label class="form-label fw-bold">Total Amount </label>
+                                <p id="previous-total-amount-preview">0</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="previous" hidden>Current</label>
+                            <div class="col-sm-12">
+                                <div style="margin-left:auto; margin-right:auto;" class="table-responsive-md table-responsive-sm text-wrap">
+                                    <table class="table table-active table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Violation</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="violation-list-preview">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <label class="form-label fw-bold">Total Amount </label>
+                                <p id="total-amount-preview">0</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="fw-bold">Violator Signature</p>
+                                <canvas id="signature-pad" style="border:1px solid gray;"></canvas>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger mt-2" onclick="signaturePad.clear()">Clear</button>
+                        <div class="float-end mt-5 pb-4">
+                            <button class="btn btn-primary" id="scanned-license-btn" onclick="saveViolation()">Save</button>
+                            <button onclick="openPage('violation-assigner-page','preview-violation-page')" class="btn btn-dark">Back</button>
+                            <button type="button" class="btn btn-outline-dark">Cancel</button>
+                        </div>
+                    </div>
+                    <!--end Preview violations-->
+
+
+                    <!--Start of No license-->
+                    <div class="no-license-page" hidden>
+                        <div class="modal-header fw-bold text-uppercase">
+                            Violator Details
+                        </div>
+                        <form id="no-license-form" class="fw-bold text-secondary" onsubmit="return false">
+                            <div class="row ">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Given Name</label>
+                                        <input type="text" oninput="validateLettersOnly(this)" id="nl-given-name" maxlength="50" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Middle Name</label>
+                                        <input type="text" oninput="validateLettersOnly(this)" id="nl-middle-name" maxlength="50" class="form-control" required />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" oninput="validateLettersOnly(this)" id="nl-last-name" maxlength="50" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Date of birth</label>
+                                        <input type="date" id="nl-dob" required class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Age</label>
+                                        <input type="number" oninput="setMaxLengthNum(2,this)" id="nl-age" required class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Gender</label>
+                                        <select id="nl-gender" class="form-control">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="number" id="nl-phone-no" oninput="setMaxLengthNum(11,this)" class="form-control number" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address (Optional)</label>
+                                        <input type="email" id="nl-email" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" id="nl-address" maxlength="200" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="float-end pb-4">
+                                <input type="submit" class="btn btn-primary btn-next" value="Next" />
+                                <button type="button" onclick="openPage('license-information-page','no-license-page')" class="btn btn-dark" id="btn-back">Back</button>
+                                <button type="button" class="btn btn-outline-dark">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--End of No license-->
+                    <!--Start of Accident-->
+                    <div class="accident-page" hidden>
+                        <div class="modal-header fw-bold text-uppercase">
+                            Accident Details
+                        </div>
+                        <form id="accident-form" class="fw-bold text-secondary" onsubmit="return false">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload Accident photo</label>
+                                        <input type="file" required formenctype="multipart/form-data" accept="image/*" class="form-control accident-image-file" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Accident Description</label>
+                                        <textarea id="ac-desc" required class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Place of accident</label>
+                                        <input type="text" id="ac-place" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 text-center">
+                                    <img hidden id="accident-map" class="img-fluid" src='https://maps.locationiq.com/v3/staticmap?key=pk.d45754a81490e6f0b9d7258d6c5b6393&center=14.708765,121.0686571&zoom=10&size=400x400&format=png&maptype=roadmap&markers=icon:tiny-red-cutout|14.708765,121.0686571&markers=icon:tiny-blue-cutout|14.708765,121.0686571'>
+                                </div>
+                            </div>
+                            <hr />
+                            <p class="h6 fw-bold text-dark mb-2">INVOLVES</p>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Given Name</label>
+                                        <input type="text" id="ac-given-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Middle Name</label>
+                                        <input type="text" id="ac-middle-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" id="ac-last-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Date of birth</label>
+                                        <input type="date" id="ac-dob" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Age</label>
+                                        <input type="number" oninput="setMaxLengthNum(2,this)" id="ac-age" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Gender</label>
+                                        <select id="ac-gender" class="form-control">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Emergency Contact Number</label>
+                                        <input type="number" id="ac-contact-no" oninput="setMaxLengthNum(11,this)" class="form-control number" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email of any relative</label>
+                                        <input type="email" id="ac-email" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Driver Address</label>
+                                        <input type="text" id="ac-address" maxlength="200" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary float-end" onclick="addInvolveToAccident()">Add Involve</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive-sm mt-2">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>NAME</th>
+                                                <th>Contact</th>
+                                                <th>Email</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-wrap accident-table-list">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row mt-2 mb-2">
+                                <div class="d-inline-block">
+                                    <input type="checkbox" id="police-chkbx" />
+                                    <label>Has Police Officer/s Involved</label>
+                                </div>
+                            </div>
+                            <div id="police-info" hidden>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Given Name</label>
+                                            <input type="text" id="police-given-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Middle Name</label>
+                                            <input type="text" id="police-middle-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Last Name</label>
+                                            <input type="text" id="police-last-name" oninput="validateLettersOnly(this)" maxlength="50" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Date of birth</label>
+                                            <input type="date" id="police-dob" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Age</label>
+                                            <input type="number" oninput="setMaxLengthNum(2,this)" id="police-age" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Gender</label>
+                                            <select id="police-gender" class="form-control">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary float-end" onclick="addOfficerInvolve()">Add officer</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-responsive-sm mt-2">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Officer Name</th>
+                                                    <th>Gender</th>
+                                                    <th>Age</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-wrap officer-table-list">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="float-end mt-5 pb-4">
+                                <input type="submit" class="btn btn-primary btn-next" value="Save" />
+                                <button type="button" class="btn btn-outline-dark">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!--End of Accident-->
+
+                </div> <!--End of modal body-->
+
+            </div>
+        </div>
+    </div><!--End of modal-->
+
+
+    <div class="sk-cube-grid" hidden>
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
+    </div>
+
+    <div style="font-size:10px;" id="sk-title" hidden class="text-center fw-bold ">Analyzing ID please wait</div>
+</div>
+
+
+@section scripts{
+    <partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.2.1/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+}
+
+
+
+

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="icon" href="~/homePageImage/dpos-logo.png" />
+    </head>
+    <body>
+        <div class="top-header">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle float-end mt-2 mx-2" data-bs-toggle="dropdown">System User</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#"><i class="bi bi-person-circle fa "></i>My Profile</a>
+                    <a class="dropdown-item" href="#"><i class="bi bi-gear"></i>Account Settings</a>
+                    <a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i>Log Out</a>
+                </div>
+            </div>
+            <img src="profile.png">
+        </div>
+
+        <div class="temp-sidebar">
+        </div>
+
+        <nav class="sidebar">
+            <i class="btn-hide fas fa-list fa"></i>
+            <h4 class="sidebar-header">SYSTEM</h4>
+            <ul class="sidebar-menu">
+            </ul>
+        </nav>
+        <div class="container-fluid mt-5 pt-3 text-nowrap">
+            @RenderBody()
+        </div>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

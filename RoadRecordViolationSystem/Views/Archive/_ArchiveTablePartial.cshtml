@@ -1,0 +1,129 @@
+﻿@model RoadRecordViolationSystem.ViewModels.ArchiveViewModel
+@using Newtonsoft.Json
+<div class="row">
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 bg-danger  text-white ">
+            <h2>@Model.Violators.Count()</h2>
+            <h4>Violators Archived</h4>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 bg-danger   text-white overflow-auto">
+            <h2>@Model.Accidents.Count()</h2>
+            <h4>Accidents Archived</h4>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 bg-danger  text-white overflow-auto">
+            <h2>@Model.ViolationTypes.Count()</h2>
+            <h4>Violation Types Archived</h4>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header fw-bold">
+        Archived List
+    </div>
+    <div class="card-body">
+        <nav>
+            <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
+                <button class="nav-link active nav-pills fw-bold" id="nav-violator-tab" data-bs-toggle="tab" data-bs-target="#nav-violator" type="button" role="tab" aria-controls="nav-violator" aria-selected="true">Violators</button>
+                <button class="nav-link fw-bold" id="nav-viotypes-tab" data-bs-toggle="tab" data-bs-target="#nav-viotypes" type="button" role="tab" aria-controls="nav-viotypes" aria-selected="false">Violation Types</button>
+                <button class="nav-link fw-bold" id="nav-accident-tab" data-bs-toggle="tab" data-bs-target="#nav-accident" type="button" role="tab" aria-controls="nav-accident" aria-selected="false">Accidents</button>
+            </div>
+        </nav>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="nav-violator" role="tabpanel" aria-labelledby="nav-violator-tab">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Last Name</th>
+                            <th>Given Name</th>
+                            <th>Middle Name</th>
+                            <th>Gender</th>
+                            <th>Phone Number</th>
+                            <th>Added By</th>
+                            <th>Date Added</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var violator in Model.Violators)
+                        {
+                            <tr>
+                                <td class="fw-bold">@violator.LastName</td>
+                                <td class="fw-bold">@violator.GivenName</td>
+                                <td class="fw-bold">@violator.MiddleName</td>
+                                <td>@violator.Gender</td>
+                                <td>@violator.PhoneNo</td>
+                                <td>@violator.AddedBy</td>
+                                <td>@violator.DateAdded.ToLongDateString()</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="requestAjaxDelete('/Archive/RestoreViolator',@JsonConvert.SerializeObject(violator))">Restore</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-viotypes" role="tabpanel" aria-labelledby="nav-viotypes-tab">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th>Fine</th>
+                            <th>Penalty</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vioType in Model.ViolationTypes)
+                        {
+                            <tr>
+                                <td class="text-wrap fw-bold">@vioType.Name</td>
+                                <td>@vioType.Code</td>
+                                <td>@vioType.Description</td>
+                                <td>@vioType.Fee</td>
+                                <td>@vioType.Penalty</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="requestAjaxDelete('/Archive/RestoreViolationTypes',@JsonConvert.SerializeObject(vioType))">Restore</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-accident" role="tabpanel" aria-labelledby="nav-accident-tab">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Place</th>
+                            <th>Date happens</th>
+                            <th>Capture by</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var accident in Model.Accidents)
+                        {
+                            <tr>
+                                <td class="fw-bold">@accident.Description</td>
+                                <td class="text-wrap">@accident.Place</td>
+                                <td>@accident.DateAdded.ToLongDateString()</td>
+                                <td>@accident.AddedBy</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="requestAjaxDelete('/Archive/RestoreAccident',@JsonConvert.SerializeObject(accident))">Restore</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

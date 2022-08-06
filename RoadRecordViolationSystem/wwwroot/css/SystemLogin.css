@@ -1,0 +1,141 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  /* fallback for old browsers */
+/*background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right,#03506f , #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+/*
+.head-title {
+  padding: 5px 20px;
+  font-weight: 700;
+}
+*/
+.cnt-center {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.menu-home {
+  color: #03506f;
+  border: 3px solid #03506f;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-decoration: none;
+  padding: 5px 20px;
+  transition: 0.3s;
+  cursor: pointer;
+text-align: center;
+}
+
+.menu-home:hover {
+  color: #03506f;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.login-container {
+  width: 40%;
+  margin: 10vh auto;
+  padding: 20px;
+  box-shadow:0px 0px 5px 0px gray;
+  background: #fff;
+  animation: loginAnimation 2s ease 0s 1 normal forwards;
+}
+
+.login-title {
+  color: #02404e;
+  font-family:Montserrat;
+  font-weight:bold;
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+
+
+input[type=text],input[type=password] {
+  width: 70%;
+  color:gray;
+  padding: 5px 20px;
+  border: none;
+  border-bottom: 2px solid #000;
+  outline: none;
+  transition: .3s ease-in-out;
+  border-color:darkgray;
+  box-sizing:border-box;
+}
+
+
+
+.submit {
+    width: 70%;
+    border: none;
+    outline: none;
+    margin: 20px 0;
+    background-color: #03506f;
+    color: white;
+    padding: 10px 0 10px 0;
+    box-sizing: border-box;
+}
+
+.submit:hover, .menu-home:hover {
+  background-color: #03506f;
+  color: #fff;
+  cursor: pointer;
+}
+
+.label-remember{
+    margin-left:90px;
+}
+
+
+@media screen and (max-width: 700px) {
+  .head-title {
+    font-size: 20px;
+  }
+
+  .menu-home {
+    font-size: 20px;
+  }
+
+  .login-container {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    margin: 0;
+    padding: 50px 20px;
+  }
+
+  .login-title {
+    font-size: 28px;
+  }
+
+  .login-subtitle {
+    font-size: 24px;
+  }
+
+  input {
+    width: 100%;
+    box-sizing:border-box;
+  }
+
+  .menu-home {
+    font-size: 16px;
+  }
+}
+
+@keyframes loginAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

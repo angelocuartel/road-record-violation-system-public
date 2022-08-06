@@ -1,0 +1,85 @@
+﻿@model RoadRecordViolationSystem.ViewModels.AccidentSceneInvolveViewModel
+@using Newtonsoft.Json
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="card">
+    <div class="card-header fw-bold">
+        Accident
+    </div>
+    <div class="card-body">
+        <nav>
+            <div class="nav nav-tabs nav-pills mb-2" id="nav-tab" role="tablist">
+                <button class="nav-link active nav-pills fw-bold" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Scene</button>
+                <button class="nav-link fw-bold" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">People/ Involves</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Place</th>
+                            <th>Latitude</th>
+                            <th>Longtitude</th>
+                            <th>Date happens</th>
+                            <th>Capture by</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{IEnumerable<Accident> accidentList = Model.Accidents.Where(i => !i.IsArchive);}
+                        @foreach (var item in accidentList)
+                        {
+                            <tr>
+                                <td class="fw-bold">@item.Description</td>
+                                <td class="text-wrap">@item.Place</td>
+                                <td class="text-wrap">@item.Latitude</td>
+                                <td class="text-wrap">@item.longtitude</td>
+                                <td>@item.DateAdded.ToLongDateString()</td>
+                                <td>@item.AddedBy</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="showViewMoreModal({id:@item.Id})"><i class="px-2 bi-three-dots"></i></button>
+                                    <button class="btn btn-danger" onclick="requestAjaxDelete('/Accident/Archive',@JsonConvert.SerializeObject(item))"><i class="px-2 bi-file-zip-fill"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>DOB</th>
+                            <th>Age</th>
+                            <th>Emergency Contact</th>
+                            <th>relatives Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Involves)
+                        {
+                             string name = $"{item.LastName}, {item.GivenName} {item.MiddleName}";
+                            <tr>
+                                <td class="text-uppercase fw-bold">@name</td>
+                                <td>@item.Gender</td>
+                                <td class="text-wrap">@item.Address</td>
+                                <td >@item.DOB</td>
+                                <td >@item.Age</td>
+                                <td >@item.EmergencyContactNo</td>
+                                <td >@item.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

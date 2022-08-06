@@ -1,0 +1,84 @@
+﻿@model List<ViolationTypes>
+
+@{
+    Layout = "~/Views/Shared/_NonEnforcerLayout.cshtml";
+}
+
+<div class="site-content">
+    
+    <nav aria-labelledby="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a class="text-decoration-none" asp-controller="Dashboard" asp-action="GetDashboardView">Dashboard</a></li>
+            <li class="breadcrumb-item active">Violation Types</li>
+        </ol>
+    </nav>
+    <div class="card mb-5">
+        <div class="card-header fw-bold">
+            Add Violation Type
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-2">
+                            <label class="form-label">Violation Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Example No Parking" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-2">
+                            <label class="form-label">Fine</label>
+                            <input type="number" id="fee" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-2">
+                            <label class="form-label">Code</label>
+                            <input type="text" id="code" class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="form-label">Penalty</label>
+                            <input type="text" id="penalty" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="desc"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="row mb-5">
+                <div>
+                    <button class="btn btn-success mt-3 float-end" onclick="addRequestAjax()"><i class="bi bi-plus"></i>Add new Violation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive-sm">
+                <partial name="TableView.cshtml" />
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-placeholder">
+        <partial name="/Views/Shared/Modals/_AddModalPartial.cshtml" />
+    </div>
+</div>
+
+@section scripts{
+    <partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script type="text/javascript" src="~/js/Global/ajaxRequest.js"></script>
+    <script type="text/javascript" src="~/js/Scoped/ViolationTypes/violationTypes.js"></script>
+}
+

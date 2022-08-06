@@ -1,0 +1,75 @@
+﻿@model RoadRecordViolationSystem.ViewModels.MyProfileViewModel
+@{
+    ViewData["Title"] = "MyAccountView";
+
+    Layout = User.IsInRole("Administrator") ? "~/Views/Shared/_NonEnforcerLayout.cshtml" : "~/Views/Shared/_EnforcerLayout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
+    <script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
+</head>
+
+<style>
+    #cropping-image-holder {
+        max-width: 100%;
+    }
+
+
+
+    .preview-profile {
+        overflow: hidden;
+        width: 300px;
+        height: 300px;
+        border: 1px solid gray;
+    }
+</style>
+
+@if (User.IsInRole("Administrator"))
+{
+    <div class="site-content">
+        <partial name="/Views/MyAccount/_EditAccountPartial.cshtml" />
+    </div>
+}
+else
+{
+    <partial name="/Views/MyAccount/_EditAccountPartial.cshtml" />
+}
+
+@* modal cropp *@
+<div class="modal" id="cropping-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title">Crop Image</p>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-fluid" id="cropping-image-holder" />
+                    </div>
+                    <div class="col-md-6">
+                        <p class="h5 mx-5 text-center">Preview Profile</p>
+                        <img class="mx-lg-4 preview-md img-fluid preview-profile rounded-circle" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="setCroppedImageToPreview()" id="crop-image-btn" class="btn btn-primary">Crop Image</button>
+                <button onclick="setCroppedImage()" id="crop-image-btn" class="btn btn-success">Save</button>
+                <button onclick="cancelCrop()" data-bs-dismiss="modal" class="btn btn-outline-dark">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-placeholder">
+    <partial name="/Views/Shared/Modals/_AddModalPartial.cshtml" />
+</div>
+
+@section scripts{
+    <partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script src="~/js/Global/ajaxRequest.js"></script>
+    <script src="~/js/Scoped/MyAccount/myAccount.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.29.0/js/canvas-to-blob.min.js"></script>
+}

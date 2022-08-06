@@ -1,0 +1,16 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{ 
+    int id = ViewBag.logId;
+}
+@Html.AntiForgeryToken()
+<div class="modal-body">
+    <p>Delete this Log ?</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" onclick="">Yes</button>
+    <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+</div>

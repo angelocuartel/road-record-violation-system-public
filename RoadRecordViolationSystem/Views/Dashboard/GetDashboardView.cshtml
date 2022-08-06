@@ -1,0 +1,76 @@
+﻿
+
+
+@{
+    Layout = "/Views/Shared/_NonEnforcerLayout.cshtml";
+}
+
+<style>
+    .card {
+        background-color: #03506f;
+    }
+</style>
+
+<div class="row">
+    <nav aria-labelledby="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
+
+    <div class="alert alert-primary" role="alert">
+        WELCOME TO DPOS VIOLATION SYSTEM
+    </div>
+
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5  text-white ">
+            <h2 class="display-4 violators"></h2>
+            <h4>Violators</h4>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5  text-white overflow-auto">
+            <h2 class="display-4 accidents"></h2>
+            <h4>Accidents</h4>
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 text-white overflow-auto">
+            <h2 class="display-4 amount"></h2>
+            <h4>Total Amount Accumulate</h4>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 text-white overflow-auto">
+            <h2 class="display-4 pending">12</h2>
+            <h4>Contest Pending</h4>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 text-white overflow-auto">
+            <h2 class="display-4 approved ">4</h2>
+            <h4>Contest Approved</h4>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+        <div class="card p-5 text-white overflow-auto">
+            <h2 class="display-4 rejected ">3</h2>
+            <h4>Contest Rejected</h4>
+        </div>
+    </div>
+    <label class="form-label fw-bold">Data to be display</label>
+    <select class="form-control data-chart-select">
+        <option value="Accident">Accidents</option>
+        <option value="Violator">Violators</option>
+    </select>
+</div>
+
+<div class="row ">
+    <canvas id="myChart"></canvas>
+</div>
+
+@section scripts{
+    <script src="~/js/Scoped/Dashboard/DashboardChart.js"></script>
+}

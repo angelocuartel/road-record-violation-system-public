@@ -1,0 +1,45 @@
+﻿@model List<RoadRecordViolationSystem.ViewModels.TicketViewModel>
+@using Newtonsoft.Json;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="card">
+    <div class="card-header fw-bold">
+        Transactions
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Violator</th>
+                    <th>Ticket Number</th>
+                    <th>Date Added</th>
+                    <th>Added By</th>
+                    <th>Total Fine</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var violator in Model)
+                {
+                    <tr>
+                        <td class="text-wrap fw-bold">@violator.Name</td>
+                        <td>@violator.TicketNo</td>
+                        <td>@violator.DateAdded.ToLongDateString()</td>
+                        <td>@violator.AddedBy</td>
+                        <td class=" fw-bolder">@violator.TotalFine.ToString("C2",new System.Globalization.CultureInfo("en-PH"))</td>
+                        @{ string status = violator.IsPaid ? "PAID" : "UNPAID";}
+                        <td>@if (status == "PAID")
+                        {<div class="badge bg-success">@status</div> }
+                        else {<div class="badge bg-danger">@status</div> }</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="openTransaction(@JsonConvert.SerializeObject(violator))">Transac</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

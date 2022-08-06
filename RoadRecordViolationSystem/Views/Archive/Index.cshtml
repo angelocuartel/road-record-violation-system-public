@@ -1,0 +1,18 @@
+﻿@model RoadRecordViolationSystem.ViewModels.ArchiveViewModel 
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_NonEnforcerLayout.cshtml";
+}
+
+<div class="site-content">
+    <div class="alert alert-primary" role="alert">
+        WELCOME TO SYSTEM ARCHIVES
+    </div>
+    <div class="table-responsive-sm">
+        <partial name="_ArchiveTablePartial.cshtml" />
+    </div>
+</div>
+@section scripts{ 
+<script src="~/js/Global/ajaxRequest.js"></script>
+}
+

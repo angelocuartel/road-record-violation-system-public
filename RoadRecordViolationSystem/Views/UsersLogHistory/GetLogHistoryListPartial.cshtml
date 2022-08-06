@@ -1,0 +1,49 @@
+﻿@model List<RoadRecordViolationSystem.Models.UsersLogHistory>
+@Html.AntiForgeryToken()
+<div class="card">
+    <div class="card-header fw-bold">
+        Log History
+    </div>
+    <div class="card-body">
+        <table id="table-test" class=" table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Profile</th>
+                    <th>UserName</th>
+                    <th>Login</th>
+                    <th>Logout</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                @foreach (var log in Model)
+                {
+
+                    <tr>
+                        <td><img alt="Profile Picture" src=@Url.Content(log.User.ProfilePicture) style="width:50px;height:50px;  object-fit:cover; " class="img-fluid rounded-circle" /></td>
+                        <td>@log.User.UserName</td>
+                        <td>
+                            <p class="fw-bold">@log.DateIn</p>
+                            <p class="badge bg-success">@log.TimeIn</p>
+                        </td>
+                        <td>
+                            <p class="fw-bold">@log.DateOut</p>
+                            <p class="badge bg-danger">@log.TimeOut</p>
+                        </td>
+                        <td>
+                        @if (log.TimeOut != "--")
+                        {
+                        <button class="btn btn-danger" onclick="requestAjaxDelete('/UsersLogHistory/DeleteLog',{id:@log.LogId})"><i class="bi-trash px-1"></i></button>
+                        }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

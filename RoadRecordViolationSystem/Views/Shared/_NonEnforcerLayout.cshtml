@@ -1,0 +1,63 @@
+﻿@using RoadRecordViolationSystem.ViewModels;
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <partial name="_MetaTagsPartial" />
+    <partial name="_CssStylePartial" />
+</head>
+<body>
+    <div class="top-header">
+        <img src="@Url.Content(HttpContextAccessor.HttpContext.Session.GetString("ProfilePicture"))" class="img-fluid rouded-circle mx-3">
+        <div class="dropdown">
+            <button class=" float-end text-white fw-bold" style="background-color:#03506F; border:none; font-size:9px; margin-top:11px;" data-bs-toggle="dropdown">@HttpContextAccessor.HttpContext.Session.GetString("UserFullName")<br/>ADMINISTRATOR</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" asp-controller="MyAccount" asp-action="MyAccountView"><i class="bi bi-person-circle fa "></i>My Profile</a>
+                <a class="dropdown-item" style="cursor:pointer" onclick="showMyLogHistoryModal('/CurrentUserLogHistory/ModalView','My Log History',null)"><i class="bi bi-gear"></i>My Log History</a>
+                <a class="dropdown-item" asp-controller="Log" asp-action="LogOut"><i class="bi bi-box-arrow-right"></i>Log Out</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="temp-sidebar">
+        <p style="color: #DFE2EA;">Space</p>
+    </div>
+
+    <nav class="sidebar">
+        <i class="btn-hide bi bi-list"></i>
+        <p class="sidebar-header h6">DPOS Violation System</p>
+        <ul class="sidebar-menu">
+            <li><a asp-action="GetDashboardView" asp-controller="Dashboard"><i class="bi bi-clipboard-data"></i>Dashboard</a> </li>
+            <li><a asp-action="AccountList" asp-controller="AdminAccounts"><i class="bi bi-people"></i>Account List</a> </li>
+            <li><a asp-action="LogHistoryList" asp-controller="UsersLogHistory"><i class="bi bi-card-list"></i>Log History</a> </li>
+            <li><a asp-action="Index" asp-controller="ViolationTypes"><i class="bi bi-exclamation-circle"></i>Violation Types</a> </li>
+            <li><a asp-action="Index" asp-controller="Violator"><i class="bi bi-person-bounding-box"></i>Violators</a> </li>
+            <li><a asp-action="Index" asp-controller="Transaction"><i class="bi bi-wallet2"></i>Violations</a> </li>
+            <li><a asp-action="Index" asp-controller="Accident"><i class="bi bi-cone-striped"></i>Accidents</a> </li>
+            <li><a asp-action="Index" asp-controller="Contest"><i class="bi bi-card-heading"></i>Contest</a> </li>
+            <li><a asp-action="Index" asp-controller="Archive"><i class="bi-file-zip-fill"></i>Archives</a> </li>
+            <li><a asp-action="Index" asp-controller="Setting"><i class="bi bi-gear"></i>Settings</a> </li>
+        </ul>
+    </nav>
+
+    <div id="main-container" class="container-fluid text-nowrap mt-5 pt-3">
+        @RenderBody()
+    </div>
+
+    <div id="my-loghistory-modal-holder"></div>
+
+    <!--required global scripts-->
+    <partial name="_JavaScriptsPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+    <!--end required global scripts-->
+    <!--Dropdown scripts-->
+    <script src="~/js/Scoped/MyLogHistory/myloghistory.js"></script>
+    <!--end Dropdown scripts-->
+    <script src="~/js/Global/someAddRemover.js"></script>
+</body>
+</html>
+

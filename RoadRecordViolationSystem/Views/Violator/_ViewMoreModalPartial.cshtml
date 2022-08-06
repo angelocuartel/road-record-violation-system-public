@@ -1,0 +1,86 @@
+﻿@model RoadRecordViolationSystem.ViewModels.ViolatorViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="modal-body">
+    <p class="h6 fw-bold">Violator</p>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Given Name</label>
+            <p>@Model.Violator.GivenName</p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Last Name</label>
+            <p>@Model.Violator.LastName</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Gender</label>
+            <p>@Model.Violator.Gender</p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Age</label>
+            <p>@Model.Violator.Age</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Phone Number</label>
+            <p>@Model.Violator.PhoneNo</p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label fw-bold text-secondary">Date of birth</label>
+            <p>@Model.Violator.DOB.ToLongDateString()</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-wrap">
+            <label class="form-label fw-bold text-secondary">Address</label>
+            <p>@Model.Violator.Address</p>
+        </div>
+    </div>
+    <p class="h6 fw-bold">License Details</p>
+    @if(Model.License is null)
+            {
+                <p class="text-center">NO LICENSE</p>
+            }
+            else
+            {
+<div class="row">
+    <div class="col-md-6">
+        <label class="form-label fw-bold text-secondary">License Number</label>
+        <p>@Model.License.LicenseNo</p>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label fw-bold text-secondary">Expiration Date</label>
+        <p>@Model.License.ExpirationDate.ToLongDateString()</p>
+    </div>
+</div>
+            }
+    <p class="h6 fw-bold">Vehicles used</p>
+    <div class="row">
+        <table class="table table-active table-hover">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Type</th>
+                    <th>PlateNumber</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vehicle in Model.Vehicles)
+                {
+                    <tr>
+                        <td>@vehicle.Model</td>
+                        <td>@vehicle.Type</td>
+                        <td>@vehicle.PlateNo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+    <div class="modal-footer">
+        <button class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+    </div>

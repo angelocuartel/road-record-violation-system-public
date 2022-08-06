@@ -1,0 +1,128 @@
+﻿@model RoadRecordViolationSystem.ViewModels.TicketViewModel
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _accessor
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<style>
+    @@media print {
+        .header-print {
+        }
+    }
+</style>
+
+<div class="row mb-5 px-4 py-4">
+    <div class="col-sm-12">
+        <div class="float-end">
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Transaction">Back</a>
+        </div>
+        <nav aria-labelledby="breadcrumb float-start">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a class="text-decoration-none" asp-controller="Dashboard" asp-action="GetDashboardView">Dashboard</a></li>
+                <li class="breadcrumb-item"><a class="text-decoration-none" asp-action="Index" asp-controller="Transaction">Transaction</a></li>
+                <li class="breadcrumb-item active fw-bold">@Model.Name</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="row px-4 py-4">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header fw-bold">TRANSACTION INFORMATION</div>
+            <div class="card-body">
+                <div class="float-end px-3">
+                    <label class="fw-bolder">STATUS</label><br />
+                    @if (Model.IsPaid)
+                    {<div class="badge bg-success">PAID</div>}
+                    else
+                    {<div class="badge bg-danger">UNPAID</div>}
+                </div>
+                <div class="mb-5">
+                    <label class="fw-bold fs-6">VIOLATOR</label>
+                    <p>@Model.Name</p>
+                    <label class="fw-bold fs-6">Ticket Number</label>
+                    <p>@Model.TicketNo</p>
+                </div>
+
+                <label class="mt-2 fw-bold">VIOLATIONS</label>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover table-bordered  mb-5">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Fine</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var violation in Model.Violations)
+                            {
+                                <tr>
+                                    <td class="text-wrap fw-bold text-secondary">@violation.Type</td>
+                                    <td class="fw-bold">@violation.Code</td>
+                                    <td class="fw-bold">@violation.Cost.ToString("C2", new System.Globalization.CultureInfo("en-PH"))</td>
+                                </tr>
+                            }   
+                        </tbody>
+                    </table>
+                    <div class="float-end mt-5">
+                        @if (ViewBag.AdditionalCharge != null && !Model.IsPaid)
+                        {
+                            <p class="fw-bold">Additional Charge</p>
+
+                            int totalDaysPassedAfterViolation = (int)(DateTime.UtcNow - Model.CommencingDateForAdditional).TotalDays;
+
+                            <p>@totalDaysPassedAfterViolation Days passed after the violation expiration (@Model.CommencingDateForAdditional.ToLongDateString()) Saturday and Sunday not included</p>
+                            <p> Days passed * (Current Fine(@Model.TotalFine) * DPOS Additional percent (@ViewBag.AdditionalPercent))</p>
+                            <p class="text-danger">@ViewBag.AdditionalCharge.ToString("C2", new System.Globalization.CultureInfo("en-PH"))</p>
+                            <p class="fw-bold">TOTAL TO BE PAYED</p>
+                            <p>@Model.TotalFine<span> + </span>@ViewBag.AdditionalCharge</p>
+                            Model.TotalFine+= ViewBag.AdditionalCharge;
+                    <p class="fw-bold text-danger">@Model.TotalFine.ToString("C2", new System.Globalization.CultureInfo("en-PH"))</p>
+                }
+                else
+                {
+                    <p class="fw-bold">TOTAL TO BE PAYED</p>
+                    <p class="fw-bold text-danger">@Model.TotalFine.ToString("C2", new System.Globalization.CultureInfo("en-PH"))</p>
+                }
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                @if (!Model.IsPaid)
+                {
+                <button class="btn btn-primary float-end" onclick="markAsPaid(@JsonConvert.SerializeObject(Model))">MARK AS PAID</button>
+                }
+                else
+                {
+                <button class="btn btn-primary float-end" onclick="printReceipt()">PRINT RECEIPT</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="to-be-print" hidden>
+    <div class="container" style="width:150mm;">
+        <div class="text-center mt-3 h5">
+            <p>DPOS</p>
+            <p>ROAD RECORD VIOLATION SYSTEM</p>
+            <p class="h6 text-secondary">@DateTime.UtcNow.ToLongDateString()</p>
+        </div>
+        <div class="text-center" style="margin-top:100px;">
+            <label class="fw-bold">NAME</label>
+            <p>@Model.Name</p>
+            <label class="fw-bold">Ticket Number</label>
+            <p>@Model.TicketNo</p>
+            <label class="fw-bold">TOTAL FINE PAYED</label>
+            <p>@Model.TotalFine.ToString("C2", new System.Globalization.CultureInfo("en-PH"))</p>
+            <label class="fw-bold">PRINTED BY</label>
+            <p>@_accessor.HttpContext.Session.GetString("UserFullName")</p>
+            <label class="fw-bold">Administrator</label>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,25 @@
+﻿@model List<RoadRecordViolationSystem.Models.Violations>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<table class="table table-borderless">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Fine</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var violation in Model)
+            {
+            <tr>
+               <td>@violation.Type</td>
+               <td>@violation.Code</td>
+               <td>@violation.Cost.ToString("C2",new System.Globalization.CultureInfo("en-PH"))</td>
+            </tr>
+            }
+    </tbody>
+</table>

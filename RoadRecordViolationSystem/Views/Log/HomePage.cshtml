@@ -1,0 +1,566 @@
+﻿@using Newtonsoft.Json;
+@model RoadRecordViolationSystem.ViewModels.LoginViewModel
+@{
+
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description"
+    content="Omnifood is an AI-powered food subscription that will make you eat healthy again, 365 days per year. It's tailored to your personal tastes and nutritional needs." />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" href="/~/homePageImage/dpos-logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="icon" href="~/~/homePageImage/dpos-logo.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="~/css/homePage.css" />
+
+
+
+  <title>DPOS Web Portal</title>
+</head>
+
+<body>
+
+  <!-- Modal -->
+  <div>
+
+
+
+    <!-- Check Violation Mdoal -->
+    <div class="modal fade" id="checkViolationModal" tabindex="-1" role="dialog"
+      aria-labelledby="checkViolationModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content px-5 py-2">
+          <div class="modal-header">
+            <h5 class="modal-title text-blue" id="checkViolationModalTitle">
+              Check Your Violation Here
+            </h5>
+
+          </div>
+          <div class="modal-body">
+            <form class="modal-form" autocomplete="off">
+              <!-- Check VIolation-->
+              <label for="ticket-input" class="modal-label">Reference No.</label>
+              <input type="text" id="ticket-input" class="form-control modal-input" placeholder="Enter Ticket No#" />
+              <button type="button" onclick="getViolations()" class="modal-btn">Check</button>
+
+              <!-- Contest -->
+              <span class="btn heading-file_contest text-white" data-toggle="modal" data-target="#fileContestModal">
+                File Contest
+              </span>
+
+              <a class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">Close</span>
+              </a>
+            </form>
+
+            <div class="modal-footer">
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Contest Modal -->
+    <div class="modal fade" id="fileContestModal" tabindex="-1" role="dialog" aria-labelledby="fileContestModalTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content px-5 py-2">
+          <div class="modal-header">
+            <h5 class="modal-title text-blue" id="fileContestModalTitle">
+              Contest Your Violation
+            </h5>
+            <a class="close contest-close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">Close</span>
+            </a>
+          </div>
+          <div class="modal-body">
+            <form class="modal-form" id="contest-form" autocomplete="off">
+
+              <div class="mb-3">
+                <label for="motoristEmail" class="modal-label">Email</label>
+                <input type="email" class="form-control modal-input" id="motoristEmail" />
+              </div>
+
+              <div class="mb-3">
+                <label for="motoristCpNo" class="modal-label">Contact No</label>
+                <input type="text" class="form-control modal-input" id="motoristCpNo" />
+              </div>
+
+
+              <div class="mb-3">
+                <label for="motoristTicketNo" class="modal-label">Ticket Reference No.</label>
+                <input type="text" class="form-control modal-input" id="motoristTicketNo"
+                  placeholder="Ticket Referebce No." />
+              </div>
+              <div class="mb-3">
+                <label for="copyORCR" enctype="multipart/form-data" class="modal-label">Copy of OR/CR</labesl>
+                  <input class="modal-file" type="file" id="copyORCR" required accept="image/png" />
+              </div>
+
+              <div class="mb-3">
+                <label for="letterContest" enctype="multipart/form-data" class="modal-label">Letter of Contest</label>
+                <input class="modal-file" type="file" id="letterContest" required accept="application/pdf" />
+              </div>
+
+              <div class="mb-3">
+                <label for="proofContest" enctype="multipart/form-data" accept="video/mp4,video/x-m4v,video/*"
+                  class="modal-label">Proof of Contest the Violation</label>
+                <input class="modal-file" type="file" id="proofContest" />
+              </div>
+
+              <!-- <button type="submit" class="modal-btn">Send</button> -->
+              <button class="btn modal-btn margin-right-sm" data-toggle="modal"
+                data-target="#contestEmailPhoneModal">
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+            <!-- Contest Email Phone Modal-->
+            <div class="modal fade" id="contestEmailPhoneModal" tabindex="-1" role="dialog"
+            aria-labelledby="contestEmailPhoneModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+              <div class="modal-content px-5 py-2">
+                <div class="modal-header">
+                  <h5 class="modal-title text-blue" id="contestEmailPhoneModal">
+                    Check Your Violation Here
+                  </h5>
+      
+                </div>
+                <div class="modal-body">
+                  <form class="modal-form" autocomplete="off">
+                    <!-- Check VIolation-->
+                    <label for="motoristEmail" class="modal-label">Email Address</label>
+                    <input type="text" id="email-input" class="form-control modal-input" placeholder="Enter Email Address" />
+
+                    <label for="phone-input" class="modal-label">Phone No.</label>
+                    <input type="text" id="phone-input" class="form-control modal-input" placeholder="Enter TPhone No." />
+                    <button type="button" onclick="getViolations()" class="modal-btn">Submit</button>
+      
+                     <!-- <button type="submit" class="modal-btn">Send</button> -->
+                    <!-- <a class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">Close</span>
+                    </a> -->
+                  </form>
+      
+                  <div class="modal-footer">
+                    <a class="close contest-close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">Close</span>
+                    </a>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+          </div>
+  </div>
+
+  <div class="modal fade" id="violation-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header fw-bold text-uppercase">
+          TicketNo:<p class="ticket-display"></p>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive-sm">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Code</th>
+                  <th>Fine</th>
+                </tr>
+              </thead>
+              <tbody class="text-wrap" id="violation-list"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="float-end btn btn-outline-dark" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <header class="header">
+    <a href="#">
+      <h2 class="logo">DPOS</h2>
+    </a>
+
+    <!-- Navbar -->
+    <nav class="main-nav">
+      <ul class="main-nav-list">
+        <li><a class="main-nav-link" href="#">Home</a></li>
+        <li><a class="main-nav-link" href="#topics">Topics</a></li>
+        <li><a class="main-nav-link" href="#about">About</a></li>
+        <li><a class="main-nav-link" href="#cta">Contact</a></li>
+        <li>
+          <button class="main-nav-link nav-check_violation" data-toggle="modal"
+            data-target="#checkViolationModal"><span>Check Violation</span></button>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="btn-mobile-nav">
+      <ion-icon class="icon-mobile-nav" name="menu-outline"></ion-icon>
+      <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+    </button>
+  </header>
+
+  <main>
+    <!-- Home -->
+    <section class="section-hero">
+      <div class="hero">
+        <div class="hero-text-box">
+          <h1 class="heading-tertiary text-white">
+            WEB-BASED ROAD RECORD VIOLATION SYSTEM USING ID ANALYZER AND
+            THERMAL PRINTING OF TICKET WITH QR CODE FOR DEPARTMENT OF PUBLIC
+            ORDER AND SAFETY - QUEZON CITY
+          </h1>
+          <p class="hero-description text-gray">
+            Providing the traffic officer and file administrator Office of
+            DPOS with an alternative and efficient method of reporting,
+            recording, and viewing motorist’s traffic violations. And provide
+            easier and faster issuance of citation tickets between traffic
+            officers and violators.
+          </p>
+          <button class="btn heading-check_violation margin-right-sm" data-toggle="modal"
+            data-target="#checkViolationModal">
+            Check Your Violation
+          </button>
+        </div>
+
+        <!-- Carousel -->
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="~/~/homePageImage/dpos1.jpg">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="~/~/homePageImage/dpos2.jpg">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="~/~/homePageImage/dpos3.jpg">
+            </div>
+            <div class="carousel-item">
+              <img class="d-block w-100" src="~/~/homePageImage/dpos4.jpg">
+            </div>
+          </div>
+
+          </a>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- Topics -->
+    <section class="section-topics" id="topics">
+      <div class="container">
+        <h2 class="heading-primary text-blue">
+          Topics
+        </h2>
+      </div>
+
+      <!-- Programs -->
+      <div class="container center-text">
+        <h2 class="heading-tertiary text-red">
+          Programs
+        </h2>
+      </div>
+
+      <div class="container grid grid--2-cols grid--center-v">
+        <!-- Program 1 -->
+        <div class="program-text-box">
+          <h3 class="heading-tertiary text-dark_blue">
+            Distribution and Awarding of Electric Tricycles to all qualified QC TODA members.
+          </h3>
+          <p class="program-description">
+            As of January 13, 2022, DPOS distributed 260 E-Trikes to the different beneficiaries of the City for
+            livelihood, modernization and upgrading of the two-stroke tricycles, and improvement of air quality. The
+            Department of Public Order and Safety, through the Green Transport Office, monitors the operation of the
+            E-Trikes.
+          </p>
+        </div>
+
+        <div class="program-img-box ">
+          <img src="~/homePageImage/program1.png" class="program-img" />
+        </div>
+
+        <!-- Program 2 -->
+        <div class="program-img-box order-2 order-md-1">
+          <img src="~/homePageImage/program2.png" class="program-img" />
+        </div>
+        <div class="program-text-box order-1 order-md-2">
+          <h3 class="heading-tertiary text-dark_blue">Distribution of Bicycle Helmets to Promote Safe Cycling in Quezon
+            City</h3>
+          <p class="program-description">
+            To promote safe cycling in the City, a total of 2,998 bicycle helmets were distributed to bikers last
+            October 2, 2020. The Green Transport Office accepts registration of bicycles and other active modes of
+            transportation voluntarily.
+          </p>
+        </div>
+
+        <!-- Program 3 -->
+        <div class="program-text-box order-3">
+          <h3 class="heading-tertiary text-dark_blue">Clearing Operation </h3>
+          <p class="program-description">
+            DPOS proceeded with the removal of the security booms last February 15, 2021 at the gate of Flordeliz Street
+            corner Commonwealth, Geneva Garden Subdivision, Barangay North Fairview, to make the street accessible to
+            the public under SP 946, series of 2020, An Ordinance was passed providing for the reopening to the public
+            of subdivision roads within territorial jurisdiction of Quezon City.
+          </p>
+        </div>
+        <div class="program-img-box order-4">
+          <img src="~/homePageImage/program3.png" class="program-img" />
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="container center-text">
+        <h2 class="heading-tertiary text-red">
+          Services
+        </h2>
+      </div>
+
+      <div class="container margin-bottom-md">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/DPOS-CLEARANCE-FOR-PRIVATE-SECURITY-GUARD.pdf">DPOS
+              Clearance For Private Security Guard </a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/DPOS-CLEARANCE-FOR-PRIVATE-SECURITY-AGENCY-TRAINING-CENTERS-DEALER-OF-AMMUNITION-_-FIREARMS.pdf">DPOS
+              CLEARANCE FOR PRIVATE SECURITY AGENCY, TRAINING
+              CENTERS, DEALER OF AMMUNITION & FIREARMS</a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/DPOS-CLEARANCE-FOR-RETAILER-OF-FIRECRACKERS.pdf">DPOS
+              CLEARANCE FOR RETAILER OF FIRECRACKERS</a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/DPOS-CLEARANCE-FOR-FIREWORKS-DISPLAY-PYROTECHNICS.pdf">DPOS
+              Clearance For Fireworks Display Pyrotechnics</a>
+          </li>
+          <li class="list-group-item">
+            <a href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/DPOS-CLEARANCE-FOR-FIRING-RANGE.pdf">DPOS
+              Clearance For Firing Range</a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/PROCEDURE-IN-THE-CONDUCT-OF-CLEARING-OPERATION.pdf">PROCEDURE
+              IN THE CONDUCT OF CLEARING OPERATION</a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/INSPECTION_VERIFICATION-OF-VARIOUS-PUBLIC-SAFETY-AND-SECURITY-RELATED-COMPLAINTS.pdf">INSPECTION/VERIFICATION
+              OF VARIOUS PUBLIC SAFETY AND
+              SECURITY RELATED COMPLAINTS
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/PROVISION-OF-SECURITY-PERSONNEL-TO-DIFFERENT-GOVERNMENT-FACILITIES-TO-ENSURE-SECURITY-AND-SAFETY.pdf">PROVISION
+              OF SECURITY PERSONNEL TO DIFFERENT
+              GOVERNMENT FACILITIES TO ENSURE SECURITY AND SAFETY.
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/ISSUANCE-OF-CCTV-CLEARANCE-FOR-THE-IMPLEMENTATION-OF-QC-ORD.-NO.-SP-2965-S-2018.pdf">
+              ISSUANCE OF CCTV CLEARANCE FOR THE IMPLEMENTATION OF QC
+              ORD. NO. SP-2965, S-2018
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a
+              href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/ENFORCEMENT-AND-IMPLEMENTATION-OF-ORDINANCES-PERTAINING-TO-HEALTH-PROTOCOLS.pdf">
+              Enforcement And Implementation Of Ordinances Pertaining To Health Protocols
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="https://quezoncity.gov.ph/wp-content/uploads/2022/02/FILING-OF-PROTEST.pdf">FILING OF PROTEST</a>
+          </li>
+          <li class="list-group-item"><a href="">Procedure In The Payment Of OVR Ticket</a></li>
+
+        </ul>
+      </div>
+    </section>
+
+
+    <!-- About -->
+    <div class="container p-3" id="about"></div>
+    <section class="section-testimonials">
+      <div class="testimonials-container">
+        <h2 class="heading-primary text-blue">About Us</h2>
+
+        <div class="testimonials">
+          <figure class="testimonial">
+            <h2 class="subheading text-red">Mission</h2>
+            <blockquote class="testimonial-text">
+              <p> To provide services using the pertinent provisions of laws, rules, and regulations for the benefit of
+                the
+                City constituents with dedication, punctuality, outstanding service, and sincerity.</p>
+            </blockquote>
+          </figure>
+
+          <figure class="testimonial">
+            <h2 class="subheading text-red">Vision</h2>
+            <blockquote class="testimonial-text">
+              <ul>
+                <li>To be dedicated in serving the people and passionate in upholding the peace, order, and safety of
+                  the city.
+                </li>
+                <li>To be an office where service, integrity, and discipline are always observed.
+                </li>
+                <li>To be a steward of the City helping lead the people towards a progressive and dynamic economy.
+                </li>
+              </ul>
+            </blockquote>
+          </figure>
+
+          <figure class="testimonial">
+            <h2 class="subheading text-red">Description</h2>
+            <blockquote class="testimonial-text">
+              The Department of Public Order and Safety (DPOS) promotes public order, security, and peace in the City.
+              It is mandated to maintain orderliness through the strict implementation of all existing rules governing
+              land use as well as other rules related to the maintenance of peace and order. The clearing of all public
+              roads of any forms of obstructions is one of its priority mandates.
+            </blockquote>
+          </figure>
+
+          <figure class="testimonial">
+            <h2 class="subheading text-red">Legal Bases</h2>
+            <blockquote class="testimonial-text">
+              <ul>
+                <li>City Ordinance No. NC-140, S-90, Ordinance Establishing The Department Of Public Order And Safety In
+                  The Quezon City Government And Providing For And Defining Its Organization Structure, Duties,
+                  Functions And Responsibilities
+                </li>
+                <li>City Ordinance No. SP-2447, S-2015, Ordinance Creating The Quezon City Green Transport Office Under
+                  The Department Of Public Order And Safety (DPOS), Defining Its Duties, Functions, And
+                  Responsibilities, Providing For Its Composition, Appropriating The Necessary Funds thereof and for
+                  other purposes
+                </li>
+              </ul>
+            </blockquote>
+          </figure>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos1.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos2.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos3.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos4.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos5.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos6.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos7.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos8.jpg" />
+        </figure>
+        <figure class="gallery-item">
+          <img src="~/homePageImage/dpos9.jpg" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <div class="container p-5" id="cta"></div>
+    <section class="section-cta p-5">
+      <div class="cta">
+        <div class="cta-text-box">
+          <h2 class="heading-secondary">Contact Information</h2>
+          <ul class="p-2" style="list-style: none;">
+            <li class="contact-item">
+              <span class="contact-heading fw-bold">Address:</span>
+              DPOS Building, Quezon City Hall Compound, Kalayaan Avenue, Brgy. Central, Quezon City
+            </li>
+            <li class="contact-item">
+              <span class="contact-heading fw-bold">Contact No:</span><a href="tel:+">84000-599</a> <a
+                href="tel:+">87101-871</a>
+              , <a href="tel:+">8924-1851</a>
+            </li>
+            <li class="contact-item"> <span class="contact-heading fw-bold">Email:</span> <a href="mailto:">
+                DPOS@quezoncity.gov.ph</a> </li>
+            <li class="contact-item"> <span class="contact-heading fw-bold">Facebook:</span> <a
+                href="https://facebook.com/DepartmentOfPublicOrderAndSafetyQC" target="_blank"><br />
+                Department Of Public Order And Safety QC</a> </li>
+          </ul>
+
+        </div>
+        <div class="google-map">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15440.667713453557!2d121.0500976!3d14.6464639!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xa0f8a709cb1843a7!2sQuezon%20City%20Hall!5e0!3m2!1sen!2sph!4v1638634854389!5m2!1sen!2sph"
+            class="google-map" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container grid grid--footer">
+      <div class="logo-col">
+
+        <p class="copyright">
+          Created <span class="year">2022</span> by SBIT4P (Group 2)
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+
+  <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
+  <script defer src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
+  @* <script src="jquery/jquery.js"></script> *@
+  <script src="~/js/homePage.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

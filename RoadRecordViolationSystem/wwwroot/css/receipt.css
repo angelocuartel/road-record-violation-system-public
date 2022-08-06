@@ -1,0 +1,132 @@
+﻿p{
+    font-size:9px;
+}
+
+
+
+.btn-container {
+    width: 219.21259842519686px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.btn-print {
+    background-color: #fff;
+    color: #03506f;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px;
+    width: 200px;
+    border-radius: 5px; 
+    border: 3px solid #03506f;
+    outline: none;
+}
+
+.fw-bold {
+    color: #03506f;
+}
+
+    .btn-print:hover {
+        background-color: #03506f;
+        color: #fff;
+        border: 3px solid #03506f;
+    }
+
+.receipt-container {
+    font-size: 12px;
+    box-shadow: 0 0 5px 1px darkgray;
+    width: 219.21259842519686px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+.header-info {
+    text-align: center;
+}
+
+.dpos-logo {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.qc-logo {
+    width: 50px;
+}
+
+.qr-code {
+    height: 100px;
+    width: 100px;
+}
+
+.info-title {
+    text-align: center;
+}
+
+.info-active {
+    font-weight: 700;
+}
+
+.item-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.enforcer, .motorist, .violation {
+    margin: 20px auto;
+    line-height: 0;
+}
+
+.qr {
+    margin: 0;
+}
+
+@media print {
+    h1,
+    button {
+        display: none;
+        visibility: hidden;
+    }
+
+    .el-hide{
+        visibility:hidden;
+    }
+
+    .receipt-container,
+    .receipt-container * {
+        box-shadow: none;
+        visibility: visible;
+    }
+
+    @page {
+        size: auto;
+        margin:0 -6cm;
+    }
+
+    html{
+        margin:0 6cm;
+    }
+
+
+ @page:header{
+     color:white;
+ }
+
+   
+
+    body {
+        padding-top: 72px;
+        padding-bottom: 72px;
+    }
+
+    .profile-picture{
+        visibility:hidden;
+    }
+}
+
+

@@ -1,0 +1,29 @@
+﻿@model List<RoadRecordViolationSystem.Models.Violator>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_NonEnforcerLayout.cshtml";
+}
+
+<div class="site-content">
+    <nav aria-labelledby="breadcrumb">
+        <ol class="breadcrumb px-4">
+            <li class="breadcrumb-item "><a class="text-decoration-none" asp-controller="Dashboard" asp-action="GetDashboardView">Dashboard</a></li>
+            <li class="breadcrumb-item active">Violators</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive-sm">
+                <partial name="_ViolationPartial.cshtml" />
+            </div>
+        </div>
+    </div>
+    <div id="modal-placeholder">
+        <partial name="/Views/Shared/Modals/_AddModalPartial.cshtml" />
+    </div>
+</div>
+
+@section scripts{
+    <partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script type="text/javascript" src="~/js/Global/ajaxRequest.js"></script>
+}

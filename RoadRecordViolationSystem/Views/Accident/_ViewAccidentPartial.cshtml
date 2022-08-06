@@ -1,0 +1,85 @@
+﻿@model RoadRecordViolationSystem.ViewModels.AccidentViewMoreViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="modal fade" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header fw-bold">
+                Accident Information
+                <button class="btn btn-close float-end" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 mb-2">
+                        <p class="form-label fw-bold text-secondary">Photo of accident</p>
+                          <img width="500" height="500" class="img-fluid mx-auto d-block" src="@Url.Content(Model.Accident.AccidentImage)" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 mb-2">
+                        <label class="form-label fw-bold text-secondary">Description of accident</label>
+                        <p class="text-wrap">@Model.Accident.Description</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 mb-2">
+                        <label class="form-label fw-bold text-secondary">Place of accident</label>
+                        <p class="text-wrap">@Model.Accident.Place</p>
+                    </div>
+                </div>
+                @if (Model.Involves.Count() > 0)
+                {
+                <div class="row">
+                    <p class="h6 fw-bold">Involves</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var involve in Model.Involves)
+                            {
+                                string name = $"{involve.LastName}, {involve.GivenName} {involve.MiddleName}";
+                                        <tr>
+                                            <td>@name</td>
+                                            <td>@involve.Age</td>
+                                        </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                }
+                @if (Model.Officers.Count() > 0)
+                {
+                <div class="row">
+                    <p class="h6 fw-bold">Officers</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Last Name</th>
+                                <th>Given Name</th>
+                                <th>Middle Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var officer in Model.Officers)
+                            {
+                                    <tr>
+                                        <td>@officer.LastName</td>
+                                        <td>@officer.GivenName</td>
+                                        <td>@officer.MiddleName</td>
+                                    </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

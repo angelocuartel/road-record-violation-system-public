@@ -1,0 +1,81 @@
+﻿@model RoadRecordViolationSystem.ViewModels.MyProfileViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<p class="text-primary text-center text-md-start fw-bold fs-3 my-4 my-md-5">
+    Personal Information
+</p>
+
+<div class="d-block d-md-flex text-center gap-5">
+
+    <!-- User Image-->
+    <img src="@Url.Content(Model.ProfilePicture)" id="pictureOutput" class="rounded-circle"
+         height="180"
+         width="180" />
+
+    <!-- User Info-->
+    <div>
+        <input type="text" id="profilePicturePath" hidden asp-for="ProfilePicture" />
+        <h5 class="mt-3 fw-bold">@Model.UsersInformation.LastName, @Model.UsersInformation.GivenName @Model.UsersInformation.MiddleName</h5>
+        <p class="text-muted">@Model.UsersInformation.City,@Model.UsersInformation.Address</p>
+        <p class="fw-bold">ID no. @Model.Id</p>
+        <p class="bg-primary user-role text-white mt-4 p-2">@Model.Role</p>
+    </div>
+</div>
+
+<div class="text-center mx-3 text-md-start">
+    <label for="image-upload" class="btn btn-outline-primary fw-bold mt-3">
+        Change Profile
+    </label>
+    <input type="file" accept="image/*" hidden id="image-upload" onchange="showCropImage()" />
+</div>
+
+<!-- Form -->
+<form method="post">
+    <input type="text" hidden asp-for="UsersInformation.UserInfoId" />
+    <input type="text" id="recent-profile" hidden asp-for="ProfilePicture" />
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">Last Name</label>
+            <input type="text" asp-for="UsersInformation.LastName" disabled class="form-control" />
+            <span asp-validation-for="UsersInformation.LastName" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">Given Name</label>
+            <input type="text" asp-for="UsersInformation.GivenName" disabled class="form-control" />
+            <span asp-validation-for="UsersInformation.GivenName" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">Middle Name</label>
+            <input type="text" asp-for="UsersInformation.MiddleName" disabled class="form-control" />
+            <span asp-validation-for="UsersInformation.MiddleName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">City</label>
+            <input type="text" asp-for="UsersInformation.City" disabled class="form-control" />
+            <span asp-validation-for="UsersInformation.City" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">Address</label>
+            <input type="text" asp-for="UsersInformation.Address" disabled class="form-control" />
+            <span asp-validation-for="UsersInformation.Address" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">Gender</label>
+            <select asp-for="UsersInformation.Gender" id="gender" disabled class="form-control">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            <span asp-validation-for="UsersInformation.Gender" class="text-danger"></span>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="pt-5 mt-5">
+        <button class="btn btn-danger" onclick="requestAjaxShowModal('ChangePassword','Change My Password',null)">Change Password</button>
+        <button id="edit-button" class="btn btn-primary mx-1 my-1 float-end" onclick="enableEdit()">Edit</button>
+    </div>
+</div>
